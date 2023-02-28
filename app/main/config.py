@@ -1,6 +1,6 @@
 import os
 
-basedir = os.path.abspath(os.path.dirname("database")) + '/database'
+basedir = os.path.abspath(os.path.dirname("database")) + '/app/database'
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
