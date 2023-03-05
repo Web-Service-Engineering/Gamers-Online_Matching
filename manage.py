@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app.main import create_app, db
 from app import blueprint
 
-app = create_app('test')
+app = create_app('dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
 
