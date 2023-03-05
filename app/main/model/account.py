@@ -73,3 +73,4 @@ class BartleQuotient(db.Model):
     
     def __repr__(self):
         return "<BartleQuotient '{}'>".format(self.profile_id)
+
