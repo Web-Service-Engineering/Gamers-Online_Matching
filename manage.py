@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from app.main import create_app, db
 from app import blueprint
 
-app = create_app(os.getenv('BOILERPLATE_ENV') or 'test')
+app = create_app('test')
 app.register_blueprint(blueprint)
 app.app_context().push()
 
