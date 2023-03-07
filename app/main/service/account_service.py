@@ -47,8 +47,7 @@ def save_new_profile(data):
             state=data['state'],
             date_of_birth=data['date_of_birth'],
             skillset_id=data['skillset_id'],
-            gender=data['gender'],
-            created_on=datetime.datetime.utcnow()
+            gender=data['gender']
         )
         save_changes(new_profile)
         response_object = {
