@@ -27,6 +27,7 @@ class ProfileDto:
         'account_id': fields.Integer(required=True, description='account id - primary key'),
         'first_name': fields.String(required=True, description='first name'),
         'last_name': fields.String(required=False, description='last name'),
+        'friendly_name': fields.String(required=False, description='friendly name'),
         'city': fields.String(required=False, description='city'),
         'state': fields.String(required=False, description='state'),
         'date_of_birth': fields.String(required=True, description='date of birth'),
