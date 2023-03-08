@@ -3,7 +3,7 @@
 from flask_restx import Api
 from flask import Blueprint
 
-from .main.controller.user_controller import api as user_ns
+#from .main.controller.user_controller import api as user_ns
 from .main.controller.account_controller import api as account_ns
 from .main.controller.profile_controller import api as profile_ns
 
@@ -15,6 +15,6 @@ api = Api(blueprint,
           description='a boilerplate for flask restplus web service'
           )
 
-api.add_namespace(user_ns, path='/user')
+#api.add_namespace(user_ns, path='/user')
 api.add_namespace(account_ns, path='/account')
 api.add_namespace(profile_ns, path='/profile')

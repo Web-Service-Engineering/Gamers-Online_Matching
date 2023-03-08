@@ -1,4 +1,5 @@
 import datetime
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 from app.main import db
 from app.main.model.account import Account, Profile
@@ -9,7 +10,7 @@ def save_new_account(data):
     if not account:
         new_user = Account(
             email=data['email'],
-            password=data['password'],
+            password= generate_password_hash(data['password']),
             created_on=datetime.datetime.utcnow()
         )
         save_changes(new_user)
@@ -49,7 +50,35 @@ def save_new_profile(data):
             skillset_id=data['skillset_id'],
             gender=data['gender']
         )
+    
         save_changes(new_profile)
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully registered.',
+            'account_id': ""
+        }
+        return response_object, 201
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'Profile already exists.',
+        }
+        return response_object, 
+
+def update_profile(data):
+    profile = Profile.query.filter_by(id=data['id']).first()
+    if profile is not None:  
+        profile.first_name=data["first_name"]
+        profile.last_name=data['last_name']
+        profile.friendly_name=data['friendly_name']
+        profile.city=data['city']
+        profile.state=data['state']
+        profile.date_of_birth=data['date_of_birth']
+        profile.skillset_id=data['skillset_id']
+        profile.gender=data['gender']
+
+        profile.verified = True
+        db.session.commit()
         response_object = {
             'status': 'success',
             'message': 'Successfully registered.'
@@ -58,7 +87,7 @@ def save_new_profile(data):
     else:
         response_object = {
             'status': 'fail',
-            'message': 'Profile already exists.',
+            'message': 'Profile does not exist.',
         }
         return response_object, 
 
@@ -69,5 +98,11 @@ def get_all_profiles():
     return Profile.query.all()
 
 def save_changes(data):
-    db.session.add(data)
-    db.session.commit()
+    try:
+        db.session.add(data)
+        db.session.commit()
+    except:
+        db.session.rollback()
+
+    #db.session.add(data)
+    #db.session.commit()
