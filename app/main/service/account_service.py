@@ -2,6 +2,8 @@ import datetime
 import jwt
 import uuid
 
+from operator import itemgetter
+from itertools import groupby
 from flask_bcrypt import generate_password_hash, check_password_hash
 from app.main import db
 from app.main.model.account import Account, Profile, BartleQuotient
@@ -80,8 +82,38 @@ def encode_auth_token(self, account_id):
     except Exception as e:
         return e    
 
-def save_bartle_results(data):
-    bartle = Profile.query.BartleQuotient.query.filter_by()
+def save_new_bartle_results(data):
+    profile = Profile.query.filter_by(account_id=data['account_id'])
+    if profile is not None:  
+        cnt = len(data['responses'])
+        data['responses'].sort(key=itemgetter(1))
+        results=groupby(data['responses'],key=itemgetter(1))
+        achieverpct=results[1].sum()/cnt
+        explorerpct=results[2].sum()/cnt
+        killerpct=results[3].sum()/cnt
+        socializerpct=results[4].sum()/cnt
+
+        new_bartle_quotient = BartleQuotient(
+                profile_id=profile.id,
+                achiever_pct=achieverpct,
+                explorer_pct=explorerpct ,
+                killer_pct=killerpct,   
+                socializer_pct=socializerpct   
+            )
+        
+        save_changes(new_bartle_quotient)
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully registered.',
+        }
+        return response_object, 201
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'Failed to create profile.',
+        }
+        return response_object, 500
+
     
 # move profile to its own service
 def save_new_profile(data):

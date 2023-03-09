@@ -44,9 +44,9 @@ class ProfileDto:
     })
 
 
-class BartleTestDto:
-    api = Namespace('bartle', description='account related operations')
-    account = api.model('bartle', {
+class BartleQuotientDto:
+    api = Namespace('bartlequotient', description='bartle test related operations')
+    bartlequotient = api.model('bartlequotient', {
         'account_id': fields.String(required=True, description='account_id'),
         'responses': fields.List(fields.String(), required=True,  description='list of bartle test responses')
     })

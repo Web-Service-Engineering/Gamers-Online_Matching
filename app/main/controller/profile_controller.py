@@ -6,7 +6,7 @@ from ..service.account_service import get_all_profiles, get_profile_by_id, save_
 
 api = ProfileDto.api
 _profile = ProfileDto.profile
-    
+
 @api.route('/')
 class ProfileList(Resource):   
     @api.doc('list_of_profiles')
@@ -43,6 +43,6 @@ class Profile(Resource):
         if not profile:
             api.abort(404)
         else:
-            return profile
+          return profile
         
     
