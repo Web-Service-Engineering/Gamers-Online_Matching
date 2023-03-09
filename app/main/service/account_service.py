@@ -4,7 +4,7 @@ import uuid
 
 from flask_bcrypt import generate_password_hash, check_password_hash
 from app.main import db
-from app.main.model.account import Account, Profile
+from app.main.model.account import Account, Profile, BartleQuotient
 
 
 def save_new_account(data):
@@ -78,11 +78,14 @@ def encode_auth_token(self, account_id):
             algorithm='HS256'
         )
     except Exception as e:
-        return e
+        return e    
+
+def save_bartle_results(data):
+    bartle = Profile.query.BartleQuotient.query.filter_by()
     
 # move profile to its own service
 def save_new_profile(data):
-    profile = Profile.query.filter_by(account_id=data['account_id']).first()
+    profile = Profile.query.filter_by(account_id=data['account_id'])
     if not profile:
         new_profile = Profile(
             account_id=data['account_id'],

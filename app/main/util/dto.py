@@ -42,3 +42,11 @@ class ProfileDto:
         'gender': fields.String(required=True, description='gender'),
         'id': fields.String(description='user Identifier')
     })
+
+
+class BartleTestDto:
+    api = Namespace('bartle', description='account related operations')
+    account = api.model('bartle', {
+        'account_id': fields.String(required=True, description='account_id'),
+        'responses': fields.List(fields.String(), required=True,  description='list of bartle test responses')
+    })
