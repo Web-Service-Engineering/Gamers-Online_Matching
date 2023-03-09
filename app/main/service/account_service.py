@@ -1,6 +1,8 @@
 import datetime
-from flask_bcrypt import generate_password_hash, check_password_hash
+import jwt
+import uuid
 
+from flask_bcrypt import generate_password_hash, check_password_hash
 from app.main import db
 from app.main.model.account import Account, Profile
 
@@ -10,7 +12,7 @@ def save_new_account(data):
     if not account:
         new_user = Account(
             email=data['email'],
-            password= generate_password_hash(data['password']),
+            password= generate_password_hash(data['password'], 10),
             created_on=datetime.datetime.utcnow()
         )
         save_changes(new_user)
@@ -26,7 +28,6 @@ def save_new_account(data):
         }
         return response_object, 409
 
-
 def get_all_accounts():
     return Account.query.all()
 
@@ -36,6 +37,50 @@ def get_account_by_id(account_id):
 def get_account_by_email(email):
     return Account.query.filter_by(email=email).first()
 
+def login_user(data):
+    try:
+        account = Account.query.filter_by(email=data['email']).first()
+        if account is not None and check_password_hash(account.password, data['password']):      
+            token = encode_auth_token(account.id)
+            response_object = {
+                'status': 'success',
+                'message': 'Successfully logged in.',
+                'Authorization' : token
+            }
+            return response_object, 200
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Email or password does not match.',
+            }
+            return response_object, 401
+    except Exception as e:
+        response_object = {
+                'status': 'fail',
+                'message': 'Try again.',
+            }
+        return response_object, 401
+
+def encode_auth_token(self, account_id):
+    """
+    Generates the Auth Token
+    :return: string
+    """
+    try:
+        payload = {
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+            'iat': datetime.datetime.utcnow(),
+            'sub': account_id
+        }
+        return jwt.encode(
+            payload,
+            str(uuid.uuid4()),
+            algorithm='HS256'
+        )
+    except Exception as e:
+        return e
+    
+# move profile to its own service
 def save_new_profile(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
     if not profile:

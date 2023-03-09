@@ -21,9 +21,7 @@ class AccountList(Resource):
     def post(self):
         """Creates a new User """
         data = request.json
-        return save_new_account(data=data)
-    
-      
+        return save_new_account(data=data)     
 
 @api.route('/<account_id>')
 @api.param('account_id', 'The Account identifier')
