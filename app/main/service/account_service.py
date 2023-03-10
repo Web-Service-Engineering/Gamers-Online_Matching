@@ -1,12 +1,11 @@
 import datetime
 import jwt
-import uuid
 
 from flask_bcrypt import generate_password_hash, check_password_hash
 from app.main import db
 from app.main.model.account import Account, Profile, BartleQuotient
-from sqlalchemy import Join
 
+key = 'goqRfXIYWRmbaqduPaa0Hn7Hf8wzRX0s'
 
 def save_new_account(data):
     account = Account.query.filter_by(email=data['email']).first()
@@ -39,6 +38,7 @@ def get_account_by_email(email):
     return Account.query.filter_by(email=email).first()
 
 def login_user(data):
+
     try:
         account = Account.query.filter_by(email=data['email']).first()
         if account is not None and check_password_hash(account.password, data['password']):      
@@ -62,6 +62,30 @@ def login_user(data):
             }
         return response_object, 401
 
+def logout_user(data):
+        if data:
+            auth_token = data.split(" ")[1]
+        else:
+            auth_token = ''
+        if auth_token:
+            resp = decode_auth_token(auth_token)
+            if not isinstance(resp, str):
+                # mark the token as blacklisted
+                auth_token = ''
+                return auth_token
+            else:
+                response_object = {
+                    'status': 'fail',
+                    'message': resp
+                }
+                return response_object, 401
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Provide a valid auth token.'
+            }
+            return response_object, 403
+    
 def encode_auth_token(self, account_id):
     """
     Generates the Auth Token
@@ -75,12 +99,27 @@ def encode_auth_token(self, account_id):
         }
         return jwt.encode(
             payload,
-            str(uuid.uuid4()),
+            key,
             algorithm='HS256'
         )
     except Exception as e:
         return e    
 
+def decode_auth_token(auth_token):
+    """
+    Decodes the auth token
+    :param auth_token:
+    :return: integer|string
+    """
+    try:
+        payload = jwt.decode(auth_token, key)
+        
+        return payload['sub']
+    except jwt.ExpiredSignatureError:
+        return 'Signature expired. Please log in again.'
+    except jwt.InvalidTokenError:
+        return 'Invalid token. Please log in again.'
+        
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
 
