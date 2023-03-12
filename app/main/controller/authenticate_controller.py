@@ -18,12 +18,13 @@ class Login(Resource):
         data = request.json
         return login_user(data=data)
 
-    # Write logout method
-    @api.route('/logout')
-    class Login(Resource):
-        @api.doc('Logout in user')
-        #@api.expect(_account, validate=True)
-        def post(self):
-            """ logout user """
-            data = request.json
-            return logout_user(data=data)
+#Write logout method
+@api.route('/logout')
+class Logout(Resource):
+    @api.doc('Logout in user')
+    def post(self):
+        """ logout in user """
+        # get auth token
+        auth_header = request.headers.get('Authorization')
+        return logout_user.logout_user(data=auth_header) 
+

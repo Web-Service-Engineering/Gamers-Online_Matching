@@ -12,9 +12,9 @@ from .main.controller.bartlequotient_controller import api as bartlequotient_ns
 blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint,
-          title='FLASK RESTPLUS API BOILER-PLATE WITH JWT',
+          title='Progamming Project SWE 6813',
           version='1.0',
-          description='a boilerplate for flask restplus web service'
+          description='Games Online Matching web service'
           )
 
 #api.add_namespace(user_ns, path='/user')
