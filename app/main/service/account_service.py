@@ -42,7 +42,7 @@ def login_user(data):
     try:
         account = Account.query.filter_by(email=data['email']).first()
         if account is not None and check_password_hash(account.password, data['password']):      
-            token = encode_auth_token(account.id)
+            token = encode_auth_token(account)
             response_object = {
                 'status': 'success',
                 'message': 'Successfully logged in.',
@@ -57,6 +57,7 @@ def login_user(data):
             return response_object, 401
     except Exception as e:
         response_object = {
+                'status': 'fail',
                 'status': 'fail',
                 'message': 'Try again.',
             }
@@ -86,7 +87,7 @@ def logout_user(data):
             }
             return response_object, 403
     
-def encode_auth_token(self, account_id):
+def encode_auth_token(data):
     """
     Generates the Auth Token
     :return: string
@@ -95,7 +96,7 @@ def encode_auth_token(self, account_id):
         payload = {
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
             'iat': datetime.datetime.utcnow(),
-            'sub': account_id
+            'sub': data.id
         }
         return jwt.encode(
             payload,
