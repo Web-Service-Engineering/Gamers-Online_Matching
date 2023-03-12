@@ -12,11 +12,15 @@ class BaseTestCase(TestCase):
         return app
 
     def setUp(self):
-        self.mock_account_list_requests_controller = patch('flask.testing.FlaskClient.get')
-        self.mock_register_account_requests_controller = patch('flask.testing.FlaskClient.post')
-        self.mock_get_account_list_controller = self.mock_account_list_requests_controller.start()
-        self.mock_save_account_controller = self.mock_register_account_requests_controller.start()
+        self.mock_get_requests = patch('flask.testing.FlaskClient.get')
+        self.mock_post_requests = patch('flask.testing.FlaskClient.post')
+        self.mock_put_requests = patch('flask.testing.FlaskClient.put')
+
+        self.mock_get_list_controller = self.mock_get_requests.start()
+        self.mock_save_controller = self.mock_post_requests.start()
+        self.mock_update_controller = self.mock_put_requests.start()
 
     def tearDown(self):
-        self.mock_account_list_requests_controller.stop()
-        self.mock_register_account_requests_controller.stop()
+        self.mock_get_requests.stop()
+        self.mock_post_requests.stop()
+        self.mock_put_requests.stop()
