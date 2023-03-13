@@ -25,4 +25,5 @@ class Logout(Resource):
         """ logout in user """
         # get auth token
         auth_header = request.headers.get('Authorization')
-        return logout_user.logout_user(data=auth_header) 
+    
+        return logout_user(data=auth_header) 

@@ -6,10 +6,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app.main import create_app, db
 from app import blueprint
+from flask_cors import CORS
 
 app = create_app('dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
+CORS(app)
 
 cli = FlaskGroup(app)
 
