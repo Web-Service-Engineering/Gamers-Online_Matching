@@ -13,6 +13,13 @@ class UserDto:
          'id': fields.String(description='user Identifier')
     })
 
+class AuthAccountDto:
+    api = Namespace('auth', description='authentication related operations')
+    auth_account = api.model('auth_details', {
+        'email': fields.String(required=True, description='The email address'),
+        'password': fields.String(required=True, description='The user password '),
+    })
+
 class AccountDto:
     api = Namespace('account', description='account related operations')
     account = api.model('account', {
@@ -33,5 +40,17 @@ class ProfileDto:
         'date_of_birth': fields.String(required=True, description='date of birth'),
         'skillset_id': fields.String(required=True, description='skillset id'),
         'gender': fields.String(required=True, description='gender'),
+        'achiever_pct': fields.String(required=False, description='achiever_pct'),
+        'explorer_pct': fields.String(required=False, description='explorer_pct'),
+        'killer_pct': fields.String(required=False, description='killer_pct'),
+        'socializer_pct': fields.String(required=False, description='socializer_pct'),
         'id': fields.String(description='user Identifier')
+    })
+
+
+class BartleQuotientDto:
+    api = Namespace('bartlequotient', description='bartle test related operations')
+    bartlequotient = api.model('bartlequotient', {
+        'account_id': fields.String(required=True, description='account_id'),
+        'responses': fields.List(fields.String(),  required=True,  description='list of bartle test responses')
     })

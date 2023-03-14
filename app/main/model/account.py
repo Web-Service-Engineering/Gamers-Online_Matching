@@ -72,5 +72,5 @@ class BartleQuotient(db.Model):
     profile = db.relationship('Profile', foreign_keys=[profile_id])
     
     def __repr__(self):
-        return "<BartleQuotient '{}'>".format(self.profile_id)
+        return "<BartleQuotient '{}'>".format(self.id)
 

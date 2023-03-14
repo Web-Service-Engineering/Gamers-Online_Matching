@@ -2,11 +2,11 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import ProfileDto
-from ..service.account_service import get_all_profiles, get_profile_by_id, save_new_profile
+from ..service.account_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile
 
 api = ProfileDto.api
 _profile = ProfileDto.profile
-    
+
 @api.route('/')
 class ProfileList(Resource):   
     @api.doc('list_of_profiles')
@@ -16,12 +16,20 @@ class ProfileList(Resource):
         return get_all_profiles()
 
     @api.response(201, 'Profile successfully created.')
+
     @api.doc('Create a new profile for a given account')
     @api.expect(_profile, validate=True)
     def post(self):
         """Creates a new profile for a given account """
         data = request.json
         return save_new_profile(data=data)
+
+    @api.doc('Update a new profile for a given account')
+    @api.expect(_profile, validate=True)
+    def put(self):
+        """Update a profile for a given account """
+        data = request.json
+        return update_profile(data=data)  
 
 @api.route('/<account_id>')
 @api.param('account_id', 'The Account identifier')
@@ -35,6 +43,6 @@ class Profile(Resource):
         if not profile:
             api.abort(404)
         else:
-            return profile
+          return profile
         
-        
+    
