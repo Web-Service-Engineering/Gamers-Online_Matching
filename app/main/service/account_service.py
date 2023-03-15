@@ -38,6 +38,35 @@ def get_account_by_email(email):
     return Account.query.filter_by(email=email).first()
 
 @staticmethod
+def get_logged_in_account(auth_token):
+        # get the auth token
+       
+        if auth_token:
+            resp = decode_auth_token(auth_token)
+            if not isinstance(resp, str):
+                account = Account.query.filter_by(id=resp).first()
+                response_object = {
+                    'status': 'success',
+                    'data': {
+                        'account_id': account.id,
+                        'email': account.email
+                    }
+                }
+                return response_object, 200
+            response_object = {
+                'status': 'fail',
+                'message': resp
+            }
+            return response_object, 401
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Provide a valid auth token.'
+            }
+
+            return response_object, 401
+        
+@staticmethod
 def login_user(data):
 
     try:
@@ -48,7 +77,7 @@ def login_user(data):
                 response_object = {
                     'status': 'success',
                     'message': 'Successfully logged in.',
-                    'Authorization' : token
+                    'Authorization' :  jwt.decode(token, key, algorithms=['HS256'])
                 }
             return response_object, 200
         else:
@@ -65,6 +94,7 @@ def login_user(data):
             }
         return response_object, 401
 
+@staticmethod
 def logout_user(data):
         if data:
             auth_token = data.split(" ")[1]
