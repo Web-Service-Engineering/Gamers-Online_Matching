@@ -32,9 +32,17 @@
  ![Sprint burnout chart](https://user-images.githubusercontent.com/85327006/225482626-2aa6d8d8-600c-47e0-9398-6d6359112c9d.PNG)
  ![Sprint insights](https://user-images.githubusercontent.com/85327006/225482629-499d3fa6-e8fe-4ecd-8c75-e9213f30f308.PNG)
  
+ # PAIR PROGRAMMING
+ 
+ ![Sprint 1 Pair program](https://user-images.githubusercontent.com/85327006/225482942-3c06328d-59c9-4bcf-b953-9b91635f209d.PNG)
+ 
  # TEST SUITE SCREENSHOT
 
  ![Sprint 1 Test Suite](https://user-images.githubusercontent.com/85327006/225457756-15cce1e2-31ba-480f-968a-9791453ab1aa.PNG)
+ 
+ # SPRINT REVIEW
+ 
+ # MISCELLANEOUS
 
  
 
