@@ -27,7 +27,10 @@
  ![Sprint 1 board 2](https://user-images.githubusercontent.com/85327006/225479957-79f2da7f-53ca-40f2-8e32-bbeaea4a2a0d.PNG)
  ![Sprint 1 board 3](https://user-images.githubusercontent.com/85327006/225479961-cf98970e-9e9e-4a06-b18f-c4400fd1be46.PNG)
  
+ # SPRINT BURNDOWN CHART
  
+ ![Sprint burnout chart](https://user-images.githubusercontent.com/85327006/225482626-2aa6d8d8-600c-47e0-9398-6d6359112c9d.PNG)
+ ![Sprint insights](https://user-images.githubusercontent.com/85327006/225482629-499d3fa6-e8fe-4ecd-8c75-e9213f30f308.PNG)
  
  # TEST SUITE SCREENSHOT
 
