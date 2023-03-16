@@ -13,6 +13,11 @@
 
  Paste this URL in the browser to test the application:  http://127.0.0.1:5000
  
+ # STORY POINT FORECAST
+ 
+ ![Sprint 1 story points](https://user-images.githubusercontent.com/85327006/225479498-7096e4d2-6b69-425e-8f49-cdcdf6e8497e.PNG)
+ 
+ 
  #TEST SUITE SCREENSHOT
 
  ![Sprint 1 Test Suite](https://user-images.githubusercontent.com/85327006/225457756-15cce1e2-31ba-480f-968a-9791453ab1aa.PNG)
