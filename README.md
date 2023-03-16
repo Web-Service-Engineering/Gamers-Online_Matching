@@ -22,15 +22,18 @@
  ## Sprint 1
  ![Sprint 1 story points](https://user-images.githubusercontent.com/85327006/225479498-7096e4d2-6b69-425e-8f49-cdcdf6e8497e.PNG)
  
- # STORY DECOMPOSITION SPRINT !
+ # STORY DECOMPOSITION SPRINT 1
  
  ![story decomp](https://user-images.githubusercontent.com/85327006/225481310-077181a5-66cb-4e00-9526-08b7166b99de.PNG)
  
- # KANBAN BOARD
+ # KANBAN BOARD 
  
  ![Sprint 1 board](https://user-images.githubusercontent.com/85327006/225479964-da00a065-c168-4f74-bd69-d3d32660f725.PNG)
  ![Sprint 1 board 2](https://user-images.githubusercontent.com/85327006/225479957-79f2da7f-53ca-40f2-8e32-bbeaea4a2a0d.PNG)
  ![Sprint 1 board 3](https://user-images.githubusercontent.com/85327006/225479961-cf98970e-9e9e-4a06-b18f-c4400fd1be46.PNG)
+ 
+ # DAILY SCRUM SHEET
+ [Daily_Scrum_Tracker - Team3_SWE6813.xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10994553/Daily_Scrum_Tracker.-.Team3_SWE6813.xlsx)
  
  # SPRINT BURNDOWN CHART
  
