@@ -7,6 +7,7 @@ from ..service.account_service import login_user, logout_user, get_logged_in_acc
 api = AuthAccountDto.api
 _account = AuthAccountDto.auth_account
 
+
 @api.route('/login')
 class Login(Resource):
 
@@ -15,17 +16,16 @@ class Login(Resource):
     def post(self):
         """ login in user """
         data = request.json
-        return login_user(data=data) 
+        return login_user(data=data)
 
 #Write logout method
 @api.route('/logout')
 class Logout(Resource):
-    @api.doc('Logout in user')
+    @api.doc('Logout user')
     def post(self):
-        """ logout in user """
+        """ logout user """
         # get auth token
-        auth_header = request.headers.get('Authorization')
-    
+        auth_header = request.headers.get('Authorization')    
         return logout_user(data=auth_header) 
     
 #Write logout method
