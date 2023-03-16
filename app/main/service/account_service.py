@@ -37,17 +37,48 @@ def get_account_by_id(account_id):
 def get_account_by_email(email):
     return Account.query.filter_by(email=email).first()
 
+@staticmethod
+def get_logged_in_account(auth_token):
+        # get the auth token
+       
+        if auth_token:
+            resp = decode_auth_token(auth_token)
+            if not isinstance(resp, str):
+                account = Account.query.filter_by(id=resp).first()
+                response_object = {
+                    'status': 'success',
+                    'data': {
+                        'account_id': account.id,
+                        'email': account.email
+                    }
+                }
+                return response_object, 200
+            response_object = {
+                'status': 'fail',
+                'message': resp
+            }
+            return response_object, 401
+        else:
+            response_object = {
+                'status': 'fail',
+                'message': 'Provide a valid auth token.'
+            }
+
+            return response_object, 401
+        
+@staticmethod
 def login_user(data):
 
     try:
         account = Account.query.filter_by(email=data['email']).first()
-        if account is not None and check_password_hash(account.password, data['password']):      
+        if account and check_password_hash(account.password, data['password']):      
             token = encode_auth_token(account)
-            response_object = {
-                'status': 'success',
-                'message': 'Successfully logged in.',
-                'Authorization' : token
-            }
+            if token:
+                response_object = {
+                    'status': 'success',
+                    'message': 'Successfully logged in.',
+                    'Authorization' :  jwt.decode(token, key, algorithms=['HS256'])
+                }
             return response_object, 200
         else:
             response_object = {
@@ -63,6 +94,7 @@ def login_user(data):
             }
         return response_object, 401
 
+@staticmethod
 def logout_user(data):
         if data:
             auth_token = data.split(" ")[1]
@@ -94,7 +126,7 @@ def encode_auth_token(data):
     """
     try:
         payload = {
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
             'iat': datetime.datetime.utcnow(),
             'sub': data.id
         }
@@ -113,14 +145,14 @@ def decode_auth_token(auth_token):
     :return: integer|string
     """
     try:
-        payload = jwt.decode(auth_token, key)
+        payload = jwt.decode(auth_token, key, algorithms=['HS256'])
         
         return payload['sub']
     except jwt.ExpiredSignatureError:
         return 'Signature expired. Please log in again.'
     except jwt.InvalidTokenError:
         return 'Invalid token. Please log in again.'
-        
+
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
 

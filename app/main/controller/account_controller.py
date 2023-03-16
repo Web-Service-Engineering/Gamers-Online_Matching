@@ -19,7 +19,7 @@ class AccountList(Resource):
     @api.doc('Create a new account')
     @api.expect(_account, validate=True)
     def post(self):
-        """Creates a new User """
+        """Creates a new account """
         data = request.json
         return save_new_account(data=data)     
 
