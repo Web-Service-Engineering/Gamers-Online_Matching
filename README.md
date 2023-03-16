@@ -42,7 +42,16 @@
  
  # SPRINT REVIEW
  
+  ![Sprint 1 Review](https://user-images.githubusercontent.com/85327006/225483154-05122ecc-0d63-4ffa-8c42-12b709e99241.PNG)
+  
  # MISCELLANEOUS
+ 
+ ## Product Requirements document
+[PRD_SWE6813.docx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10985733/PRD_SWE6813.docx)
+
+ ## Low Level Design Document
+[swe6813 project low level design docuent.docx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10985736/swe6813.project.low.level.design.docuent.docx)
+
 
  
 
