@@ -19,7 +19,9 @@
  
  # STORY DECOMPOSITION
  
- # Kanban BOARD
+ ![story decomp](https://user-images.githubusercontent.com/85327006/225481310-077181a5-66cb-4e00-9526-08b7166b99de.PNG)
+ 
+ # KANBAN BOARD
  
  ![Sprint 1 board](https://user-images.githubusercontent.com/85327006/225479964-da00a065-c168-4f74-bd69-d3d32660f725.PNG)
  ![Sprint 1 board 2](https://user-images.githubusercontent.com/85327006/225479957-79f2da7f-53ca-40f2-8e32-bbeaea4a2a0d.PNG)
