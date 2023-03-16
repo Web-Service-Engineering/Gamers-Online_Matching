@@ -15,9 +15,14 @@
  
  # STORY POINT FORECAST
  
+ ## Whole Project
+ 
+ [Project_User_Stories_and_Points - Team3_SWE6813.xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10994365/Project_User_Stories_and_Points.-.Team3_SWE6813.xlsx)
+
+ ## Sprint 1
  ![Sprint 1 story points](https://user-images.githubusercontent.com/85327006/225479498-7096e4d2-6b69-425e-8f49-cdcdf6e8497e.PNG)
  
- # STORY DECOMPOSITION
+ # STORY DECOMPOSITION SPRINT !
  
  ![story decomp](https://user-images.githubusercontent.com/85327006/225481310-077181a5-66cb-4e00-9526-08b7166b99de.PNG)
  
