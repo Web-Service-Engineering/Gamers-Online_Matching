@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import AuthAccountDto
-from ..service.account_service import login_user, logout_user, get_logged_in_account
+from ..service.auth_service import login_user, logout_user, get_logged_in_account
 
 api = AuthAccountDto.api
 _account = AuthAccountDto.auth_account

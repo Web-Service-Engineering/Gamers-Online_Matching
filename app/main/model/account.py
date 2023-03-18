@@ -1,5 +1,9 @@
 from .. import db
+import datetime
+import jwt
+from typing import Union
 
+key = 'goqRfXIYWRmbaqduPaa0Hn7Hf8wzRX0s'
 #from flask_bcrypt import Bcrypt
 
 class Account(db.Model):
@@ -22,55 +26,93 @@ class Account(db.Model):
     #def check_password(self, password):
         #return flask_bcrypt.check_password_hash(self.password_hash, password)
 
-    def __repr__(self):
-        return "<Account '{}'>".format(self.email)
-
-class Profile(db.Model):
-    """ Profile Model for storing profile related details """
-    __tablename__ = "profile"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
-    first_name = db.Column(db.String(100), nullable=False) 
-    last_name = db.Column(db.String(100), nullable=False)
-    friendly_name = db.Column(db.String(100), nullable=False)
-    city = db.Column(db.String(255), nullable=True)
-    state = db.Column(db.String(2), nullable=True)
-    date_of_birth = db.Column(db.String(25), nullable=False)
-    skillset_id = db.Column(db.Integer, db.ForeignKey('skillset.id'))
-    gender = db.Column(db.String(10), nullable=True)
-
-    # Relationships
-    account = db.relationship('Account', foreign_keys=[account_id])
-    skillset = db.relationship('Skillset', foreign_keys=[skillset_id])
-
-    def __repr__(self) -> str:
-        return "<Profile '{}'>".format(self.friendly_name)
     
-class Skillset(db.Model):
-    """ Skillset Model for storing skillset related details """
-    __tablename__ = "skillset"
+    @staticmethod   
+    def encode_auth_token(data: int):
+        """
+        Generates the Auth Token
+        :return: string
+        """
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1, seconds=5),
+                'iat': datetime.datetime.utcnow(),
+                'sub': data.id
+            }
+            return jwt.encode(
+                payload,
+                key,
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e  
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(50), nullable=False)
+    @staticmethod   
+    def decode_auth_token(auth_token):
+        """
+        Decodes the auth token
+        :param auth_token:
+        :return: integer|string
+        """
+        try:
+            payload = jwt.decode(auth_token, key, algorithms=["HS256"])
+            
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired. Please log in again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
 
+  
     def __repr__(self):
-        return "<Skillset '{}'>".format(self.name)
+        return "<Account '{}'>".format(self.email)  
 
-class BartleQuotient(db.Model):
-    """ BartleQuotient Model for storing bartle test related details """
-    __tablename__ = "bartlequotient"
+# class Profile(db.Model):
+#     """ Profile Model for storing profile related details """
+#     __tablename__ = "profile"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), nullable=False)
-    achiever_pct = db.Column(db.Double, nullable=False) 
-    explorer_pct = db.Column(db.Double, nullable=False) 
-    killer_pct = db.Column(db.Double, nullable=False) 
-    socializer_pct = db.Column(db.Double, nullable=False) 
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
+#     first_name = db.Column(db.String(100), nullable=False) 
+#     last_name = db.Column(db.String(100), nullable=False)
+#     friendly_name = db.Column(db.String(100), nullable=False)
+#     city = db.Column(db.String(255), nullable=True)
+#     state = db.Column(db.String(2), nullable=True)
+#     date_of_birth = db.Column(db.String(25), nullable=False)
+#     skillset_id = db.Column(db.Integer, db.ForeignKey('skillset.id'))
+#     gender = db.Column(db.String(10), nullable=True)
 
-    #Relationships
-    profile = db.relationship('Profile', foreign_keys=[profile_id])
+#     # Relationships
+#     account = db.relationship('Account', foreign_keys=[account_id])
+#     skillset = db.relationship('Skillset', foreign_keys=[skillset_id])
+
+#     def __repr__(self) -> str:
+#         return "<Profile '{}'>".format(self.friendly_name)
     
-    def __repr__(self):
-        return "<BartleQuotient '{}'>".format(self.id)
+# class Skillset(db.Model):
+#     """ Skillset Model for storing skillset related details """
+#     __tablename__ = "skillset"
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     name = db.Column(db.String(50), nullable=False)
+
+#     def __repr__(self):
+#         return "<Skillset '{}'>".format(self.name)
+
+# class BartleQuotient(db.Model):
+#     """ BartleQuotient Model for storing bartle test related details """
+#     __tablename__ = "bartlequotient"
+
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     profile_id = db.Column(db.Integer, db.ForeignKey('profile.id'), nullable=False)
+#     achiever_pct = db.Column(db.Double, nullable=False) 
+#     explorer_pct = db.Column(db.Double, nullable=False) 
+#     killer_pct = db.Column(db.Double, nullable=False) 
+#     socializer_pct = db.Column(db.Double, nullable=False) 
+
+#     #Relationships
+#     profile = db.relationship('Profile', foreign_keys=[profile_id])
+    
+#     def __repr__(self):
+#         return "<BartleQuotient '{}'>".format(self.id)
 
