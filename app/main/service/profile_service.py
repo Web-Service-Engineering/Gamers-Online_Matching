@@ -3,7 +3,6 @@ import datetime
 from app.main import db
 from app.main.model.profile import Profile, BartleQuotient
 
-
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
 
@@ -110,17 +109,19 @@ def update_profile(data):
 
 def get_profile_by_id(data):
     id = data
-    profile = Profile.query.filter_by(account_id=id).first()
+    #profile = Profile.query.filter_by(account_id=id).first()
+    results = db.session.query(BartleQuotient, Profile).join(BartleQuotient, Profile.id == BartleQuotient.profile_id, isouter=True).filter(Profile.account_id==id).first()
+    profile = results.Profile
     if profile is not  None:
-        bartle_quotient = BartleQuotient.query.filter_by(profile_id=profile.id).first()
-        if bartle_quotient is not None:
+        #bartle_quotient = BartleQuotient.query.filter_by(profile_id=profile.id).first()
+       if results.BartleQuotient is not None:
+       #if bartle_quotient is not None:
+            bartle_quotient = results.BartleQuotient
             profile.achiever_pct = bartle_quotient.achiever_pct
             profile.explorer_pct = bartle_quotient.explorer_pct
             profile.killer_pct = bartle_quotient.killer_pct
             profile.socializer_pct = bartle_quotient.socializer_pct
 
-        
-    #profile = db.session.query(Profile, BartleQuotient).filter(Profile.id == BartleQuotient.profile_id).filter(account_id==account_id)
     return profile
 
 def get_all_profiles():
@@ -132,6 +133,3 @@ def save_changes(data):
         db.session.commit()
     except:
         db.session.rollback()
-
-    #db.session.add(data)
-    #db.session.commit()
