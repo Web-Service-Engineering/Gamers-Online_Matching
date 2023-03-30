@@ -54,7 +54,59 @@ def generate_token(account: Account):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
+
+def befriend(account_id_from, account_id_to):
+    me = Account.query.filterby(id=account_id_from)
+    friend = Account.query.filter_by(id=account_id_to)
+    try:
+        if friend is None:
+            raise Exception('User not found.')
+        if friend == me:
+             raise Exception('You cannot follow yourself.')
+        
+        me.friend(friend)
+        db.session.commit()
+
+        response_object = {
+                'status': 'success',
+                'message': 'You are now friends with {}'
+            }
+        
+        return response_object, 201
+    except Exception as e:
+        response_object = {
+            'status': 'fail',
+            'message': str(e)
+        }
+
+        return response_object
+
+def unfriend(account_id_from, account_id_to):
+    me = Account.query.filterby(id=account_id_from)
+    friend = Account.query.filter_by(id=account_id_to)
+    try:
+        if friend is None:
+            raise Exception('Account not found.')
+        if friend == me:
+             raise Exception('You cannot unfriend yourself.')
+        
+        me.unfriend(friend)
+        db.session.commit()
+
+        response_object = {
+                'status': 'success',
+                'message': 'You are no longer friends with {}'
+            }
+        
+        return response_object, 201
+    except Exception as e:
+        response_object = {
+            'status': 'fail',
+            'message': str(e)
+        }
     
+        return response_object
+
 def save_changes(data):
     try:
         db.session.add(data)
