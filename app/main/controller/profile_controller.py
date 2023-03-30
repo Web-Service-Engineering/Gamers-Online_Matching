@@ -2,7 +2,8 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import ProfileDto
-from ..service.account_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile
+from ..service.profile_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile
+from ..util.decorator import token_required
 
 api = ProfileDto.api
 _profile = ProfileDto.profile
@@ -45,4 +46,5 @@ class Profile(Resource):
         else:
           return profile
         
+
     

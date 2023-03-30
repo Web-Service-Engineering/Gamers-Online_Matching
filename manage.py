@@ -1,3 +1,4 @@
+
 import os
 import unittest
 
@@ -11,13 +12,14 @@ from flask_cors import CORS
 app = create_app('dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
-CORS(app)
+
 
 cli = FlaskGroup(app)
 
 @cli.command('run')
 def run():
     app.run()
+
 
 @cli.command('test')
 def test():

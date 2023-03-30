@@ -12,6 +12,7 @@ class DevelopmentConfig(Config):
     TESTING=True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'projectDB.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SECRET_KEY = '9OLWxND4o83j4K4iuopO'
 
 
 class TestingConfig(Config):

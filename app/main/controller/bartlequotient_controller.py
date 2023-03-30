@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import  BartleQuotientDto
-from ..service.account_service import save_new_bartle_results
+from ..service.profile_service import save_new_bartle_results
 
 api = BartleQuotientDto.api
 _bartlequotient = BartleQuotientDto.bartlequotient
