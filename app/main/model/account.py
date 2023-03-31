@@ -6,24 +6,6 @@ from typing import Union
 key = 'goqRfXIYWRmbaqduPaa0Hn7Hf8wzRX0s'
 #from flask_bcrypt import Bcrypt
 
-class FriendInvitations(db.Model):
-    """ FriendInvitations Model for storing friends related details """
-    __tablename__ = "friendinvitations"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    account_id_to = db.Column(db.Integer, db.ForeignKey('account.id'), nullable=False)
-    created_on = db.Column(db.String(25), nullable=False)
-
-    def __repr__(self) -> int:
-        return "<FriendInvitations '{}'>".format(self.id) 
-
-#This is direct translation of the association table 
-#This is an auxiliary table that has no data other than the foreign keys
-friends = db.Table('friends',
-    db.Column('account_id', db.Integer, db.ForeignKey('account.id')),
-    db.Column('account_id_to', db.Integer, db.ForeignKey('account.id'))
-)
 
 class Account(db.Model):
     """ Account Model for storing user related details """
@@ -34,30 +16,6 @@ class Account(db.Model):
     password = db.Column(db.String(255), nullable=False)
     created_on = db.Column(db.String(25), nullable=False)
 
-    #declare the many-to-many relationship in the users table
-    friendships = db.relationship(
-        'Account', secondary=friends,
-        primaryjoin=(friends.c.account_id == id),
-        secondaryjoin=(friends.c.account_id_to == id),
-        backref=db.backref('friends', lazy='dynamic'), lazy='dynamic')
-    
-    def friend(self, account):
-        if not self.is_friends(account):
-            self.friendships.append(account)
-
-    def unfriend(self, account):
-        if self.is_friends(account):
-            self.friendships.remove(account)
-
-    def is_friend(self, account):
-        return self.friendships.filter(
-            friends.c.account_id_to == account.id).count() > 0
-    
-    def my_friends(self, account):
-        return self.friendships.filter(
-            friends.c.account_id == account.id).all()
-    
-  
     
     #@property
     #ref password(self):
