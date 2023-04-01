@@ -10,7 +10,7 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     TESTING=True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'projectDB.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////' + os.path.join(basedir, 'projectDB.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = '9OLWxND4o83j4K4iuopO'
 
@@ -18,7 +18,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'testDB.db')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////' + os.path.join(basedir, 'testDB.db')
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
