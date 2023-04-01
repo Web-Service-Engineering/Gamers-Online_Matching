@@ -1,7 +1,7 @@
 import os
 
 #basedir = os.path.abspath(os.path.dirname("database")) + '/app/database'
-postgres_local_base = 'postgresq://postgres_gamers:password_gamers@gamersonlinedb.cmt8630tspsi.us-east-1.rds.amazonaws.com:5432/postgres'
+postgres_local_base = 'postgresql://postgres_gamers:password_gamers@gamersonlinedb.cmt8630tspsi.us-east-1.rds.amazonaws.com:5432/postgres'
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
     DEBUG = False
