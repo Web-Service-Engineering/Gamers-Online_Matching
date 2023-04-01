@@ -5,6 +5,7 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 from app.main import db
 from app.main.model.account import Account
 
+
 def save_new_account(data):
     account = Account.query.filter_by(email=data['email']).first()
     if not account:
@@ -14,7 +15,7 @@ def save_new_account(data):
             created_on=datetime.datetime.utcnow()
         )
         save_changes(new_user)
-        #return generate_token(new_user)
+        # return generate_token(new_user)
 
         response_object = {
             'status': 'success',
@@ -29,14 +30,18 @@ def save_new_account(data):
         }
         return response_object, 409
 
+
 def get_all_accounts():
     return Account.query.all()
+
 
 def get_account_by_id(account_id):
     return Account.query.filter_by(id=account_id).first()
 
+
 def get_account_by_email(email):
     return Account.query.filter_by(email=email).first()
+
 
 def generate_token(account: Account):
     try:
@@ -54,7 +59,6 @@ def generate_token(account: Account):
             'message': 'Some error occurred. Please try again.'
         }
         return response_object, 401
-
 
 
 def save_changes(data):
