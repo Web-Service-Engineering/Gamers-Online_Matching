@@ -7,6 +7,7 @@ from .main.controller.account_controller import api as account_ns
 from .main.controller.profile_controller import api as profile_ns
 from .main.controller.authenticate_controller import api as authenticate_ns
 from .main.controller.bartlequotient_controller import api as bartlequotient_ns
+from .main.controller.friends_controller import api as friends_ns
 
 authorizations = {
     'apikey': {
@@ -39,3 +40,4 @@ api.add_namespace(account_ns, path='/account')
 api.add_namespace(profile_ns, path='/profile')
 api.add_namespace(bartlequotient_ns, path='/bartlequotient')
 api.add_namespace(authenticate_ns, path='/authenticate')
+api.add_namespace(friends_ns, path='/friends')

@@ -54,3 +54,10 @@ class BartleQuotientDto:
         'account_id': fields.String(required=True, description='account_id'),
         'responses': fields.List(fields.String(),  required=True,  description='list of bartle test responses')
     })
+
+class ProfileFriendShipDto:
+    api = Namespace('profilefriendship', description='friend related operations')
+    profilefriendship = api.model('profilefriendship', {
+        'current_account_id': fields.Integer(required=True, description='current account id'),
+        'friend_account_id': fields.Integer(required=True, description='friend account id')
+    })  

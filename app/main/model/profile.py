@@ -1,5 +1,22 @@
 from .. import db
+from sqlalchemy import orm
 
+association_table = db.Table(
+    'profilefriendship',
+    db.Column('profile_id', db.Integer, primary_key=True),
+    db.Column('friend_id', db.Integer, primary_key=True),
+)
+
+class Friends(db.Model):
+    """ Friends Model """
+    __tablename__ = "friends"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    
+    def __repr__(self):
+        return "<Friends '{}'>".format(self.name)
+    
 class Profile(db.Model):
     """ Profile Model for storing profile related details """
     __tablename__ = "profile"
@@ -18,6 +35,15 @@ class Profile(db.Model):
     # Relationships
     account = db.relationship('Account', foreign_keys=[account_id])
     skillset = db.relationship('Skillset', foreign_keys=[skillset_id])
+   
+    friends = db.relationship(
+        'Friends',
+        secondary='profilefriendship',
+        primaryjoin='Profile.id == profilefriendship.c.profile_id',
+        secondaryjoin='profilefriendship.c.friend_id == Friends.id',
+        backref='profiles',
+    )
+
 
     def __repr__(self) -> str:
         return "<Profile '{}'>".format(self.friendly_name)
@@ -48,3 +74,6 @@ class BartleQuotient(db.Model):
     
     def __repr__(self):
         return "<BartleQuotient '{}'>".format(self.id)
+
+
+    

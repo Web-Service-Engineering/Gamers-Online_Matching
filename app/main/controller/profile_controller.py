@@ -46,5 +46,17 @@ class Profile(Resource):
         else:
           return profile
         
-
+@api.route('/<account_id>')
+@api.param('account_id', 'The Account identifier')
+@api.response(404, 'Profile not found.')
+class Profile(Resource):
+    @api.doc('get profile by account id')
+    @api.marshal_with(_profile)
+    def get(self, account_id):
+        """get a profile given its account identifier"""
+        profile = get_profile_by_id(account_id)
+        if not profile:
+            api.abort(404)
+        else:
+          return profile
     

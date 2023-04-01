@@ -1,7 +1,7 @@
 import datetime
 
 from app.main import db
-from app.main.model.profile import Profile, BartleQuotient
+from app.main.model.profile import Profile, BartleQuotient, Friends
 
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
@@ -126,6 +126,36 @@ def get_profile_by_id(data):
 
 def get_all_profiles():
     return Profile.query.all()
+
+def add_a_friend(data):
+    current_profile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    friend_profile = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+    
+    try:
+        if current_profile is None:
+            raise Exception('Current users profile not found')
+        if friend_profile is None:
+            raise Exception('Friend''s account is not found')
+        if current_profile.account_id==data['friend_account_id']:
+            raise Exception('You cannot friend yourself')
+
+        friend = Friends(name=friend_profile.friendly_name)
+        save_changes(friend)
+
+        current_profile.friends.append(friend)
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'You are friends with {}'.format(friend_profile.friendly_name)
+        }
+    except Exception as e:
+         response_object = {
+            'status': 'fail',
+            'message': str(e)
+        }
+
+    return response_object, 
+
 
 def save_changes(data):
     try:
