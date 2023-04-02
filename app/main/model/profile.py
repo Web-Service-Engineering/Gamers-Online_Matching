@@ -9,7 +9,7 @@ class FriendshipInvitations(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     account_id=db.Column(db.Integer,  nullable=False)
     account_id_to = db.Column(db.Integer, nullable=False)
-    created_on = db.Column(db.DateTime,  server_default=func.now())
+    created_on = db.Column(db.DateTime(timezone=True),  server_default=func.now())
 
     def __repr__(self):
         return "<FriendshipInvitations '{}'>".format(self.id)
@@ -41,8 +41,8 @@ class Profile(db.Model):
     date_of_birth = db.Column(db.String(25), nullable=False)
     skillset_id = db.Column(db.Integer, db.ForeignKey('skillset.id'))
     gender = db.Column(db.String(10), nullable=True)
-    created_on = db.Column(db.DateTime, server_default=func.now())
-    updated_on = db.Column(db.DateTime, onupdate=func.now())
+    created_on = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_on = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
     account = db.relationship('Account', foreign_keys=[account_id])
@@ -95,13 +95,13 @@ class ProfileFriendship(db.Model):
     
 class Group(db.Model):
     """ Group Model """
-    __tablename__ = "Group"
+    __tablename__ = "group"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False) 
     description = db.Column(db.String(255), nullable=True)
-    created_on = db.Column(db.DateTime, server_default=func.now())
-    updated_on = db.Column(db.DateTime, onupdate=func.now())
+    created_on = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    updated_on = db.Column(db.DateTime(timezone=True), onupdate=func.now())
  
     groups = db.relationship('ProfileGroup', backref = backref('group', order_by = id), primaryjoin = "Group.id == ProfileGroup.group_id")  
 

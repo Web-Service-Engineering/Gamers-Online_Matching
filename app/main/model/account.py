@@ -15,7 +15,7 @@ class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    created_on = db.Column(db.DateTime,  server_default=func.now())
+    created_on = db.Column(db.DateTime(timezone=True),  server_default=func.now())
 
     
     #@property
