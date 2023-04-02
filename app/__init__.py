@@ -9,6 +9,7 @@ from .main.controller.authenticate_controller import api as authenticate_ns
 from .main.controller.bartlequotient_controller import api as bartlequotient_ns
 from .main.controller.friends_controller import api as friends_ns
 
+
 authorizations = {
     'apikey': {
         'type': 'apiKey',

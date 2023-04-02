@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import ProfileDto
-from ..service.profile_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile
+from ..service.profile_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile, get_my_friends
 from ..util.decorator import token_required
 
 api = ProfileDto.api
@@ -59,4 +59,18 @@ class Profile(Resource):
             api.abort(404)
         else:
           return profile
+
+@api.route('/friends/<account_id>')
+@api.param('account_id', 'The Account identifier')
+@api.response(404, 'Account not found.')
+class Profile(Resource):
+    @api.doc('get a list of friends')
+    @api.marshal_with(_profile)
+    def get(self, account_id):
+        """get a profiles given its identifier"""
+        profiles = get_my_friends(account_id)
+        if not profiles:
+            api.abort(404)
+        else:
+            return profiles
     

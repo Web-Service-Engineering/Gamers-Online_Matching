@@ -61,3 +61,4 @@ class ProfileFriendShipDto:
         'current_account_id': fields.Integer(required=True, description='current account id'),
         'friend_account_id': fields.Integer(required=True, description='friend account id')
     })  
+ 

@@ -109,14 +109,14 @@ def update_profile(data):
 
 def get_profile_by_id(data):
     id = data
-    #profile = Profile.query.filter_by(account_id=id).first()
-    results = db.session.query(BartleQuotient, Profile).join(BartleQuotient, Profile.id == BartleQuotient.profile_id, isouter=True).filter(Profile.account_id==id).first()
-    profile = results.Profile
+    profile = Profile.query.filter_by(account_id=id).first()
+    #results = db.session.query(BartleQuotient, Profile).join(BartleQuotient, Profile.id == BartleQuotient.profile_id, isouter=True).filter(Profile.account_id==id).first()
+    #profile = results.Profile
     if profile is not  None:
-        #bartle_quotient = BartleQuotient.query.filter_by(profile_id=profile.id).first()
-       if results.BartleQuotient is not None:
-       #if bartle_quotient is not None:
-            bartle_quotient = results.BartleQuotient
+        bartle_quotient = BartleQuotient.query.filter_by(profile_id=profile.id).first()
+       #if results.BartleQuotient is not None:
+        if bartle_quotient is not None:
+            #bartle_quotient = results.BartleQuotient
             profile.achiever_pct = bartle_quotient.achiever_pct
             profile.explorer_pct = bartle_quotient.explorer_pct
             profile.killer_pct = bartle_quotient.killer_pct
@@ -127,26 +127,38 @@ def get_profile_by_id(data):
 def get_all_profiles():
     return Profile.query.all()
 
+def get_my_friends(public_id):
+   
+    #my_profile = Profile.query.filter_by(account_id=public_id).first()
+    #myfriends = my_profile.friends.filter_by(profile_id=my_profile.id).all()
+    return None
+
+def is_friend(data):
+        friend = Profile.query.filter_by(account_id=data['current_account_id']).first()
+        return Profile.is_friend(friend)
+
 def add_a_friend(data):
-    current_profile = Profile.query.filter_by(account_id=data['current_account_id']).first()
-    friend_profile = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+    my_profile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    friend = Profile.query.filter_by(account_id=data['friend_account_id']).first()
     
     try:
-        if current_profile is None:
-            raise Exception('Current users profile not found')
-        if friend_profile is None:
-            raise Exception('Friend''s account is not found')
-        if current_profile.account_id==data['friend_account_id']:
+        if my_profile is None:
+            raise Exception('Current profile is not found')
+        if my_profile.account_id==data['friend_account_id']:
             raise Exception('You cannot friend yourself')
-
-        friend = Friends(name=friend_profile.friendly_name)
+        if friend is None:
+            raise Exception('Friend''s account is not found')
+        if (friend.is_friend(friend)):
+            raise Exception('{} is already a friend'.format(friend.friendly_name))
+        
+        friend = Friends(name=friend.friendly_name)
         save_changes(friend)
 
-        current_profile.friends.append(friend)
+        my_profile.friendships.append(friend)
         db.session.commit()
         response_object = {
             'status': 'success',
-            'message': 'You are friends with {}'.format(friend_profile.friendly_name)
+            'message': 'You are friends with {}'.format(friend.friendly_name)
         }
     except Exception as e:
          response_object = {
@@ -156,6 +168,32 @@ def add_a_friend(data):
 
     return response_object, 
 
+def remove_a_friend(data):
+    my_profile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    friend = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+    
+    try:
+        if my_profile is None:
+            raise Exception('Current profile is not found')
+        if my_profile.account_id==data['friend_account_id']:
+            raise Exception('You cannot unfriend yourself')
+        if friend is None:
+            raise Exception('Friend''s account is not found')
+        
+        my_profile,remove_a_friend(friend)
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'You are no longer friends with {}'.format(friend.friendly_name)
+        }
+
+    except Exception as e:
+         response_object = {
+            'status': 'fail',
+            'message': str(e)
+        }
+
+    return response_object, 
 
 def save_changes(data):
     try:

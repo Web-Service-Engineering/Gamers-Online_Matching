@@ -1,7 +1,8 @@
 from .. import db
 import datetime
 import jwt
-from typing import Union
+from sqlalchemy.sql import func
+
 
 key = 'goqRfXIYWRmbaqduPaa0Hn7Hf8wzRX0s'
 #from flask_bcrypt import Bcrypt
@@ -14,7 +15,7 @@ class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    created_on = db.Column(db.String(255), nullable=False)
+    created_on = db.Column(db.DateTime,  server_default=func.now())
 
     
     #@property
