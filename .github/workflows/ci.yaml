@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -29,3 +29,19 @@ jobs:
     - name: Run tests
       run: |
         python -m unittest discover
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Install Vercel CLI
+      run: |
+        npm install -g vercel
+
+    - name: Deploy to Vercel
+      run: |
+        vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
