@@ -23,7 +23,7 @@ class Friends(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    friends_profile_id = db.Column(db.Integer, nullable=False)
+    friends_profile_id = db.Column(db.Integer, nullable=True)
 
     profiles = relationship('Profile', secondary = 'profilefriendship')
 
