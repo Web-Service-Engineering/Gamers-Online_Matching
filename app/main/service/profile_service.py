@@ -1,7 +1,7 @@
 import datetime
 
 from app.main import db
-from app.main.model.profile import Profile, BartleQuotient, Friends
+from app.main.model.profile import Profile, BartleQuotient, Friends, ProfileFriendship
 
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
@@ -128,37 +128,45 @@ def get_all_profiles():
     return Profile.query.all()
 
 def get_my_friends(public_id):
+    # creating list
+    profiles = Profile.query.filter_by(account_id=public_id).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id)
+    #profiles = db.session.query(ProfileFriendship, Profile).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id, isouter=True).filter(Profile.account_id==public_id).all()
    
-    #my_profile = Profile.query.filter_by(account_id=public_id).first()
-    #myfriends = my_profile.friends.filter_by(profile_id=my_profile.id).all()
-    return None
+    return profiles
 
 def is_friend(data):
         friend = Profile.query.filter_by(account_id=data['current_account_id']).first()
         return Profile.is_friend(friend)
 
 def add_a_friend(data):
-    my_profile = Profile.query.filter_by(account_id=data['current_account_id']).first()
-    friend = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+    requestor = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    receiver = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+
+    #Replace in Sprint 3
+    count = 0
+    profile_lookup = Friends(my_friends_profile_id=receiver.id).first()
+    if profile_lookup is not None:
+        count = ProfileFriendship.query.filter_by(profile_id=requestor.id, friend_id=profile_lookup.id).count()
     
     try:
-        if my_profile is None:
+        if requestor is None:
             raise Exception('Current profile is not found')
-        if my_profile.account_id==data['friend_account_id']:
+        if requestor.account_id==data['friend_account_id']:
             raise Exception('You cannot friend yourself')
-        if friend is None:
+        if receiver is None:
             raise Exception('Friend''s account is not found')
-        if (friend.is_friend(friend)):
-            raise Exception('{} is already a friend'.format(friend.friendly_name))
+        if count > 0:
+            raise Exception('{} is already a friend'.format(f.friendly_name))
         
-        friend = Friends(name=friend.friendly_name)
-        save_changes(friend)
+        new_friend = Friends(name=receiver.friendly_name, friends_profile_id=receiver.id)
+        db.session.add(new_friend)
 
-        my_profile.friendships.append(friend)
+        requestor.friends.append(new_friend)
+    
         db.session.commit()
         response_object = {
             'status': 'success',
-            'message': 'You are friends with {}'.format(friend.friendly_name)
+            'message': 'You are friends with {}'.format(receiver.friendly_name)
         }
     except Exception as e:
          response_object = {
@@ -169,18 +177,18 @@ def add_a_friend(data):
     return response_object, 
 
 def remove_a_friend(data):
-    my_profile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    reqeustor = Profile.query.filter_by(account_id=data['current_account_id']).first()
     friend = Profile.query.filter_by(account_id=data['friend_account_id']).first()
     
     try:
-        if my_profile is None:
+        if reqeustor is None:
             raise Exception('Current profile is not found')
-        if my_profile.account_id==data['friend_account_id']:
+        if reqeustor.account_id==data['friend_account_id']:
             raise Exception('You cannot unfriend yourself')
         if friend is None:
             raise Exception('Friend''s account is not found')
         
-        my_profile,remove_a_friend(friend)
+        reqeustor.friends.remove(friend)
         db.session.commit()
         response_object = {
             'status': 'success',
