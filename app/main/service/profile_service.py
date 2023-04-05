@@ -127,16 +127,25 @@ def get_profile_by_id(data):
 def get_all_profiles():
     return Profile.query.all()
 
-def get_my_friends(public_id):
+def get_my_friends(accountid):
     # creating list
-    profiles = Profile.query.filter_by(account_id=public_id).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id)
+
+    profiles = []
+    profilefriendships = Profile.query.filter_by(account_id=accountid).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id).all()
+    for profilefriendship in profilefriendships:
+        for friend in profilefriendship.friends:
+           profile = Profile.query.filter_by(id = friend.friends_profile_id).first()     
+           profiles.append(profile)
+
+    return profiles
+
     #profiles = db.session.query(ProfileFriendship, Profile).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id, isouter=True).filter(Profile.account_id==public_id).all()
    
     return profiles
 
-def is_friend(data):
-        friend = Profile.query.filter_by(account_id=data['current_account_id']).first()
-        return Profile.is_friend(friend)
+# def is_friend(data):
+#         friend = Profile.query.filter_by(account_id=data['current_account_id']).first()
+#         return Profile.is_friend(friend)
 
 def add_a_friend(data):
     requestor = Profile.query.filter_by(account_id=data['current_account_id']).first()
@@ -144,7 +153,7 @@ def add_a_friend(data):
 
     #Replace in Sprint 3
     count = 0
-    profile_lookup = Friends(my_friends_profile_id=receiver.id).first()
+    profile_lookup = Friends.query.filter_by(friends_profile_id=receiver.id).first()
     if profile_lookup is not None:
         count = ProfileFriendship.query.filter_by(profile_id=requestor.id, friend_id=profile_lookup.id).count()
     
@@ -156,7 +165,7 @@ def add_a_friend(data):
         if receiver is None:
             raise Exception('Friend''s account is not found')
         if count > 0:
-            raise Exception('{} is already a friend'.format(f.friendly_name))
+            raise Exception('{} is already a friend'.format(receiver.friendly_name))
         
         new_friend = Friends(name=receiver.friendly_name, friends_profile_id=receiver.id)
         db.session.add(new_friend)
