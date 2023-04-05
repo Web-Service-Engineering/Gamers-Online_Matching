@@ -36,7 +36,7 @@ def get_logged_in_account(auth_token):
 
             return response_object, 401
         
-@staticmethod
+
 def login_user(data):
 
     try:
