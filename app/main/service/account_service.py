@@ -11,7 +11,7 @@ def save_new_account(data):
     if not account:
         new_user = Account(
             email=data['email'],
-            password=generate_password_hash(data['password'], 10),
+            password=generate_password_hash(data['password'], 10).decode('utf-8'),
             created_on=datetime.datetime.utcnow()
         )
         save_changes(new_user)

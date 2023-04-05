@@ -42,7 +42,7 @@ def login_user(data):
     try:
         account = Account.query.filter_by(email=data['email']).first()
         if account and check_password_hash(account.password, data['password']):      
-            token = Account.encode_auth_token(account)
+            token = Account.encode_auth_token(account.id)
             if token:
                 response_object = {
                     'status': 'success',
@@ -59,8 +59,8 @@ def login_user(data):
     except Exception as e:
         response_object = {
                 'status': 'fail',
-                'status': 'fail',
-                'message': 'Try again.',
+                #'message': 'Try again.',
+                'message': str(e),
             }
         return response_object, 401
 

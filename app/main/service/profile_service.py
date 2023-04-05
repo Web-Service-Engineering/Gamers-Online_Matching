@@ -177,18 +177,18 @@ def add_a_friend(data):
     return response_object, 
 
 def remove_a_friend(data):
-    reqeustor = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    requestor = Profile.query.filter_by(account_id=data['current_account_id']).first()
     friend = Profile.query.filter_by(account_id=data['friend_account_id']).first()
     
     try:
-        if reqeustor is None:
+        if requestor is None:
             raise Exception('Current profile is not found')
-        if reqeustor.account_id==data['friend_account_id']:
+        if requestor.account_id==data['friend_account_id']:
             raise Exception('You cannot unfriend yourself')
         if friend is None:
             raise Exception('Friend''s account is not found')
         
-        reqeustor.friends.remove(friend)
+        requestor.friends.remove(friend)
         db.session.commit()
         response_object = {
             'status': 'success',
