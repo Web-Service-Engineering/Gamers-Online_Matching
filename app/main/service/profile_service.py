@@ -1,7 +1,7 @@
 import datetime
 
 from app.main import db
-from app.main.model.profile import Profile, BartleQuotient, Friends, ProfileFriendship
+from app.main.model.profile import Profile, BartleQuotient, Friends, ProfileFriendship, FriendshipInvitations
 
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
@@ -17,10 +17,10 @@ def save_new_bartle_results(data):
         if bartle_quotient is None:
             new_bartle_quotient = BartleQuotient(
                     profile_id=profile.id,
-                    achiever_pct=achiever/count,
-                    explorer_pct=explorer/count ,
-                    killer_pct=killers/count,   
-                    socializer_pct=socializer/count
+                    achiever_pct=(achiever/count) * 2,
+                    explorer_pct=(explorer/count) * 2,
+                    killer_pct=(killers/count) * 2,   
+                    socializer_pct=(socializer/count) * 2
                 )
         
             save_changes(new_bartle_quotient)
@@ -139,43 +139,36 @@ def get_my_friends(accountid):
 
     return profiles
 
-    #profiles = db.session.query(ProfileFriendship, Profile).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id, isouter=True).filter(Profile.account_id==public_id).all()
-   
-    return profiles
+def send_invitation(data):
+    myprofile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    myfriendsprofile = Profile.query.filter_by(account_id=data['friend_account_id']).first()
 
-# def is_friend(data):
-#         friend = Profile.query.filter_by(account_id=data['current_account_id']).first()
-#         return Profile.is_friend(friend)
-
-def add_a_friend(data):
-    requestor = Profile.query.filter_by(account_id=data['current_account_id']).first()
-    receiver = Profile.query.filter_by(account_id=data['friend_account_id']).first()
-
-    #Replace in Sprint 3
-    count = 0
-    profile_lookup = Friends.query.filter_by(friends_profile_id=receiver.id).first()
+    friendshipcount=False
+    profile_lookup = Friends.query.filter_by(friends_profile_id=myfriendsprofile.id).first()
     if profile_lookup is not None:
-        count = ProfileFriendship.query.filter_by(profile_id=requestor.id, friend_id=profile_lookup.id).count()
+        friendshipcount = ProfileFriendship.query.filter_by(profile_id=myprofile.id, friend_id=profile_lookup.id).count()
     
+    #add check to see if invitiation already exists
+    invitationcount = FriendshipInvitations.query(account_id=myprofile.account_id, account_id_to=myfriendsprofile.account_id).count()
+ 
     try:
-        if requestor is None:
+        if myprofile is None:
             raise Exception('Current profile is not found')
-        if requestor.account_id==data['friend_account_id']:
+        if myprofile.account_id==data['friend_account_id']:
             raise Exception('You cannot friend yourself')
-        if receiver is None:
+        if myfriendsprofile is None:
             raise Exception('Friend''s account is not found')
-        if count > 0:
-            raise Exception('{} is already a friend'.format(receiver.friendly_name))
+        if friendshipcount > 0:
+            raise Exception('{} is already a friend'.format(myfriendsprofile.friendly_name))
+        if invitationcount == 1:
+            raise Exception('Invitation already sent to {}').format(myfriendsprofile.friendly_name)
         
-        new_friend = Friends(name=receiver.friendly_name, friends_profile_id=receiver.id)
-        db.session.add(new_friend)
+        new_invitation = FriendshipInvitations(account_id = myprofile.account_id, raccoiunt_id_to=myfriendsprofile.id)
+        save_changes(new_invitation)
 
-        requestor.friends.append(new_friend)
-    
-        db.session.commit()
         response_object = {
             'status': 'success',
-            'message': 'You are friends with {}'.format(receiver.friendly_name)
+            'message': 'Your invitation was sent to {}}'.format(myfriendsprofile.friendly_name)
         }
     except Exception as e:
          response_object = {
@@ -184,24 +177,66 @@ def add_a_friend(data):
         }
 
     return response_object, 
-
-def remove_a_friend(data):
-    requestor = Profile.query.filter_by(account_id=data['current_account_id']).first()
-    friend = Profile.query.filter_by(account_id=data['friend_account_id']).first()
     
+def add_a_friend(data):
+    myprofile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    myfriendsprofile = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+
+    #Replace in Sprint 3
+    count = 0
+    profile_lookup = Friends.query.filter_by(friends_profile_id=myfriendsprofile.id).first()
+    if profile_lookup is not None:
+        count = ProfileFriendship.query.filter_by(profile_id=myprofile.id, friend_id=profile_lookup.id).count()
+  
     try:
-        if requestor is None:
+        if myprofile is None:
             raise Exception('Current profile is not found')
-        if requestor.account_id==data['friend_account_id']:
-            raise Exception('You cannot unfriend yourself')
-        if friend is None:
+        if myprofile.account_id==data['friend_account_id']:
+            raise Exception('You cannot friend yourself')
+        if myfriendsprofile is None:
             raise Exception('Friend''s account is not found')
+        if count > 0:
+            raise Exception('{} is already a friend'.format(myfriendsprofile.friendly_name))
         
-        requestor.friends.remove(friend)
+        new_friend = Friends(name=myfriendsprofile.friendly_name, friends_profile_id=myfriendsprofile.id)
+        db.session.add(new_friend)
+
+        myprofile.friends.append(new_friend)
+    
         db.session.commit()
         response_object = {
             'status': 'success',
-            'message': 'You are no longer friends with {}'.format(friend.friendly_name)
+            'message': 'You are friends with {}'.format(myfriendsprofile.friendly_name)
+        }
+    except Exception as e:
+         response_object = {
+            'status': 'fail',
+            'message': str(e)
+        }
+
+    return response_object,
+
+def remove_a_friend(data):
+    myprofile = Profile.query.filter_by(account_id=data['current_account_id']).first()
+    myfriendsprofile = Profile.query.filter_by(account_id=data['friend_account_id']).first()
+      
+    myfriend, profilefriendship = db.session.query(Friends, ProfileFriendship).join(Friends, ProfileFriendship.friend_id == Friends.id, isouter=True).filter(Friends.friends_profile_id==myfriendsprofile.id and ProfileFriendship.profile_id==myprofile.id).first()
+  
+    try:
+        if myprofile is None:
+            raise Exception('Current profile is not found')
+        if myprofile.account_id==data['friend_account_id']:
+            raise Exception('You cannot unfriend yourself')
+        if myfriendsprofile is None:
+            raise Exception('Friend''s account is not found')
+        if myfriend is None and profilefriendship is None:
+            raise Exception('{} is not your friend'.format(myfriendsprofile.friendly_name))      
+       
+        myprofile.friends.remove(myfriend)
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'You are no longer friends with {}'.format(myfriendsprofile.friendly_name)
         }
 
     except Exception as e:
