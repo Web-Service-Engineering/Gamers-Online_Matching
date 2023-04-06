@@ -19,38 +19,44 @@
  
  [Project_User_Stories_and_Points - Team3_SWE6813.xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10994365/Project_User_Stories_and_Points.-.Team3_SWE6813.xlsx)
 
- ## Sprint 1
- ![Sprint 1 story points](https://user-images.githubusercontent.com/85327006/225479498-7096e4d2-6b69-425e-8f49-cdcdf6e8497e.PNG)
+ # Sprint 2
+ ![image](https://user-images.githubusercontent.com/85327006/230259600-d93ea30c-2c5d-4a89-a1f8-fbb1867d6d6d.png)
  
  # STORY DECOMPOSITION SPRINT 1
  
- ![story decomp](https://user-images.githubusercontent.com/85327006/225481310-077181a5-66cb-4e00-9526-08b7166b99de.PNG)
+ ![image](https://user-images.githubusercontent.com/85327006/230259791-96c70044-a89a-4290-94f3-96da501cbba8.png)
  
  # KANBAN BOARD 
  
- ![Sprint 1 board](https://user-images.githubusercontent.com/85327006/225479964-da00a065-c168-4f74-bd69-d3d32660f725.PNG)
- ![Sprint 1 board 2](https://user-images.githubusercontent.com/85327006/225479957-79f2da7f-53ca-40f2-8e32-bbeaea4a2a0d.PNG)
- ![Sprint 1 board 3](https://user-images.githubusercontent.com/85327006/225479961-cf98970e-9e9e-4a06-b18f-c4400fd1be46.PNG)
+ ![image](https://user-images.githubusercontent.com/85327006/230259302-64885c1b-8270-4129-9c7a-a3c29302d3da.png)
+ ![image](https://user-images.githubusercontent.com/85327006/230259376-d5455223-0478-4336-b1d1-e616d817f0f4.png)
+ ![image](https://user-images.githubusercontent.com/85327006/230259463-a728f19a-5323-43eb-abec-b7026c8f2bfd.png)
  
  # DAILY SCRUM SHEET
- [Daily_Scrum_Tracker - Team3_SWE6813.xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10994553/Daily_Scrum_Tracker.-.Team3_SWE6813.xlsx)
+ [Daily_Scrum_Tracker (2).xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/11165838/Daily_Scrum_Tracker.2.xlsx)
+[meetingAttendanceReport(General).csv](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/11165885/meetingAttendanceReport.General.csv)
  
  # SPRINT BURNDOWN CHART
  
- ![Sprint burnout chart](https://user-images.githubusercontent.com/85327006/225482626-2aa6d8d8-600c-47e0-9398-6d6359112c9d.PNG)
- ![Sprint insights](https://user-images.githubusercontent.com/85327006/225482629-499d3fa6-e8fe-4ecd-8c75-e9213f30f308.PNG)
+ ![image](https://user-images.githubusercontent.com/85327006/230260036-80aecde2-3d92-45bd-b782-0b666260c12f.png)
+ ![image](https://user-images.githubusercontent.com/85327006/230260126-83e335cd-4479-442c-9124-e2e709a79800.png)
  
  # PAIR PROGRAMMING
  
- ![Sprint 1 Pair program](https://user-images.githubusercontent.com/85327006/225482942-3c06328d-59c9-4bcf-b953-9b91635f209d.PNG)
+ ![Sprint review](https://user-images.githubusercontent.com/85327006/230260271-bb4555c1-bba8-4b55-b0e4-ebce4ff95844.PNG)
  
  # TEST SUITE SCREENSHOT
 
- ![Sprint 1 Test Suite](https://user-images.githubusercontent.com/85327006/225457756-15cce1e2-31ba-480f-968a-9791453ab1aa.PNG)
+![image](https://user-images.githubusercontent.com/85327006/230260430-f3394fd5-0479-4cb7-a341-b71ef0178b6a.png)
  
  # SPRINT REVIEW
  
-  ![Sprint 1 Review](https://user-images.githubusercontent.com/85327006/225483154-05122ecc-0d63-4ffa-8c42-12b709e99241.PNG)
+ [Progress Report meeting and submission planning - Attendance report 4-04-23 (1).csv](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/11165876/Progress.Report.meeting.and.submission.planning.-.Attendance.report.4-04-23.1.csv)
+ 
+# CI CD Implementation
+ ![image](https://user-images.githubusercontent.com/85327006/230260878-554a608b-a666-4a52-b8f9-1dfcfdc7caa2.png)
+ ![image](https://user-images.githubusercontent.com/85327006/230261604-7ea8552e-f9ea-4389-9ffc-45a04280e15d.png)
+![image](https://user-images.githubusercontent.com/85327006/230261636-319e88ff-bfdf-4882-8d55-ecf4053d60db.png)
   
  # MISCELLANEOUS
  
