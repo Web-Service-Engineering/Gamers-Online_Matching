@@ -1,5 +1,6 @@
 import datetime
 
+from sqlalchemy.sql import exists
 from app.main import db
 from app.main.model.profile import Profile, BartleQuotient, Friends, ProfileFriendship, FriendshipInvitations
 
@@ -127,6 +128,60 @@ def get_profile_by_id(data):
 def get_all_profiles():
     return Profile.query.all()
 
+def find_link_minded_players(data):
+  
+  my_profile = get_profile_by_id(data)
+  player_type = get_player_type(my_profile)
+  profiles = []
+
+  try:
+    if player_type is None:
+        raise Exception('This user has not take the bartle test')
+      
+    key = player_type.get("key")
+    value = player_type.get("value")
+
+    if key == 'A':
+        profiles =  db.session.query.fliter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.achiever_pct >= value).all()
+    if key == 'E':
+        profiles =  db.session.query.filter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.explorer_pct >= value).all()
+    if key == 'K':
+        profiles =  db.session.query.filter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.killer_pct >= value).all()
+    if key == 'S':
+        profiles =  db.session.query.filter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.socializer_pct >= value).all()
+    
+    my_friends = get_my_friends(data)
+    if my_friends is not None:
+        profile_results = []
+        for p in profiles:
+            temp = my_friends.query.filter_by(id == p.id).first()
+            if temp is None:
+                profile_results.append(temp)
+    else:
+        return profiles
+
+    return profiles
+  except Exception as e:
+        response_object = {
+        'status': 'fail',
+        'message': str(e)
+        }
+
+        return response_object
+
+def get_player_type(profile):
+   df = { 
+       'A': profile.achiever_pct, 
+       'E': profile.explorer_pct,
+       'K' : profile.killer_pct,
+       'S' : profile.socializer_pct
+    }
+   
+   key = max(df)
+   value = max(df.values())
+   result =  {key: value}
+   return result
+ 
 def get_my_friends(accountid):
     # creating list
 
