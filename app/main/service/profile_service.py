@@ -72,7 +72,8 @@ def save_new_profile(data):
         response_object = {
             'status': 'success',
             'message': 'Successfully registered.',
-            'account_id': data['account_id']
+            'profile_id': new_profile.id,
+            'account_id': new_profile.account_id
         }
         return response_object, 201
     else:
