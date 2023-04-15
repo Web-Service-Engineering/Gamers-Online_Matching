@@ -25,13 +25,7 @@ class Friends(db.Model):
     name = db.Column(db.String(50))
     friends_profile_id = db.Column(db.Integer, nullable=True)
 
-    profiles = relationship('Profile', secondary = 'profilefriendship')
-
-    # pf = db.relationship('ProfileFriendship', 
-    #                      backref = backref('friends', order_by = id), 
-    #                      primaryjoin = "Friends.id == ProfileFriendship.friend_id",
-    #                      secondaryjoin = "Profilefriendship.profiled_id == Profile.id")  
-    
+    profiles = relationship('Profile', secondary = 'profilefriendship')   
 
     def __repr__(self):
         return "<Friends '{}'>".format(self.name)
@@ -58,43 +52,8 @@ class Profile(db.Model):
     skillset = db.relationship('Skillset', foreign_keys=[skillset_id])
   
     friends = relationship('Friends', secondary = 'profilefriendship')
-
-    # friends = db.relationship(
-    #             'Friends', 
-    #             secondary='ProfileFriendship',
-    #             backref = backref('profile', lazy = 'dynamic'),           
-    #             primaryjoin='Profile.id == ProfileFriendship.profile_id',
-    #             secondaryjoin = 'ProfileFriendship.friend_id == Friends.id',
-    #             lazy='dynamic'
-    #         )
-
-
-    groups = db.relationship('ProfileGroup', backref = backref('profile', order_by = id), primaryjoin = "Profile.id == ProfileGroup.profile_id")
-
-    # groups = db.relationship(
-    #     'Groups',
-    #     secondary='ProfileGroup',
-    #     primaryjoin='Profile.id == profilegroup.c.profile_id',
-    #     secondaryjoin='profilegroup.c.group_id == Group.id',
-    #     backref='profiles',
-    # )
-
-    # def all_friends(self, myprofile):
-    #      return self.friends.query.filter(ProfileFriendship.c.profile_id == myprofile.id).all()
+    groups = db.relationship('Group', secondary='profilegroup')
     
-    # def is_friend(self, profile_id, friend_id):
-    #      return self.friends.filter_by(ProfileFriendship.profile_id == profile_id and ProfileFriendship.friend_id == friend_id).count() > 0
-    
-    # def befriend(self, friend):
-    #     if not self.is_friend(friend):
-    #         self.friends.append(friend)
-    #         return self
-
-    # def unfriend(self, friend):
-    #     if self.is_friend(friend):
-    #         self.friends.remove(friend)
-    #         return self
-           
     def __repr__(self) -> str:
         return "<Profile '{}'>".format(self.friendly_name)
 
@@ -115,10 +74,12 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False) 
     description = db.Column(db.String(255), nullable=True)
+    account_id  = db.Column(db.Integer, db.ForeignKey('account.id'), primary_key=True)
     created_on = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_on = db.Column(db.DateTime(timezone=True), onupdate=func.now())
  
-    groups = db.relationship('ProfileGroup', backref = backref('group', order_by = id), primaryjoin = "Group.id == ProfileGroup.group_id")  
+    profiles = relationship('Profile', secondary = 'profilegroup') 
+    #groups = db.relationship('ProfileGroup', backref = backref('group', order_by = id), primaryjoin = "Group.id == ProfileGroup.group_id")  
 
     def __repr__(self):
         return "<Group '{}'>".format(self.name)
@@ -134,7 +95,6 @@ class ProfileGroup(db.Model):
 
     def __repr__(self):
         return "<ProfileGroup '{}'>".format(self.__tablename__)
-    
 
 class Skillset(db.Model):
     """ Skillset Model for storing skillset related details """

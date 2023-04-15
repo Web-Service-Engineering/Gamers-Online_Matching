@@ -2,7 +2,7 @@ import datetime
 
 from sqlalchemy.sql import exists
 from app.main import db
-from app.main.model.profile import Profile, BartleQuotient, Friends, ProfileFriendship, FriendshipInvitations
+from app.main.model.profile import Profile, Group, BartleQuotient, Friends, ProfileFriendship, ProfileGroup, FriendshipInvitations
 
 def save_new_bartle_results(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
@@ -51,8 +51,7 @@ def save_new_bartle_results(data):
             'message': 'Failed to store bartle test results.',
         }
         return response_object, 500
-   
-# move profile to its own service
+
 def save_new_profile(data):
     profile = Profile.query.filter_by(account_id=data['account_id']).first()
     if not profile:
@@ -127,7 +126,18 @@ def get_profile_by_id(data):
     return profile
 
 def get_all_profiles():
-    return Profile.query.all()
+    profiles = Profile.query.all()
+
+    if profiles is not  None:
+        for p in profiles:
+            bartle_quotient = BartleQuotient.query.filter_by(profile_id=p.id).first()
+            if bartle_quotient is not None:
+                p.achiever_pct = bartle_quotient.achiever_pct
+                p.explorer_pct = bartle_quotient.explorer_pct
+                p.killer_pct = bartle_quotient.killer_pct
+                p.socializer_pct = bartle_quotient.socializer_pct
+
+    return profiles
 
 def find_link_minded_players(data):
   
@@ -302,6 +312,76 @@ def remove_a_friend(data):
         }
 
     return response_object, 
+
+def save_group(data):
+    group = Group.query.filter_by(account_id=data['account_id']).first()
+    if not group:
+        new_group = Group(
+            account_id=data['account_id'],
+            name=data['name'],
+            description=data['description']         
+        ) 
+        
+        save_changes(new_group)
+        response_object = {
+            'status': 'success',
+            'message': 'Group was successfuly created.',
+            'profile_id': group.id,
+            'account_id': group.account_id
+        }
+        return response_object, 201
+    else:
+        response_object = {
+            'status': 'fail',
+            'message': 'Group already exists.',
+        }
+        return response_object, 
+
+def get_group_by_owner(data):
+    group = Group.query.filter_by(account_id=data['account_id']).all()
+
+def add_member_to_group(data):
+    profile = Profile.query.filter_by(account_id=data['account_id']).first()
+    group = Group.query.filter_by(id=data['group_id']).first()  
+    count = ProfileGroup.query.filter_by(profile_id=profile.id, group_id=data['group_id']).count()
+    
+    try:
+        if profile is None:
+            raise Exception('Profile is not found')
+        if profile.account_id==group.account_id:
+            raise Exception('You own this group and cannot add yourself ')
+        if group is None:
+            raise Exception('Group is not found')
+        if count > 0:
+            raise Exception('{} is already a friend'.format(profile.friendly_name))
+        
+        new_group_membership = ProfileGroup(profile_id=profile.id, group_id=group.id)
+        db.session.add(new_group_membership)
+    
+        db.session.commit()
+        response_object = {
+            'status': 'success',
+            'message': 'You join group  {}'.format(group.name)
+        }
+    except Exception as e:
+         response_object = {
+            'status': 'fail',
+            'message': str(e)
+        }
+
+    return response_object,
+
+def get_group_members(accountid):
+    # creating list
+
+    profiles = []
+    profilegroups = Group.query.filter_by(account_id=accountid).join(ProfileGroup, Profile.id == ProfileGroup.profile_id).all()
+    for profilegroup in profilegroups:
+        for profilegroup in profilegroups.groups:
+           profile = Profile.query.filter_by(id = profilegroup.profile_id).first()     
+           profiles.append(profile)
+
+    return profiles
 
 def save_changes(data):
     try:
