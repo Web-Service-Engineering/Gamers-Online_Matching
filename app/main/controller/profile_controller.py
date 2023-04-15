@@ -2,7 +2,7 @@ from flask import request
 from flask_restx import Resource
 
 from ..util.dto import ProfileDto
-from ..service.profile_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile, get_my_friends
+from ..service.profile_service import get_all_profiles, get_profile_by_id, save_new_profile, update_profile, get_my_friends, find_link_minded_players
 from ..util.decorator import token_required
 
 api = ProfileDto.api
@@ -74,3 +74,16 @@ class Profile(Resource):
         else:
             return profiles
     
+@api.route('/players/<account_id>')
+@api.param('account_id', 'The Account identifier')
+@api.response(404, 'Account not found.')
+class Profile(Resource):
+    @api.doc('get a list like-minded players')
+    @api.marshal_with(_profile)
+    def get(self, account_id):
+        """get a list of like-minded  given its identifier"""
+        profiles = find_link_minded_players(account_id)
+        if not profiles:
+            api.abort(404)
+        else:
+            return profiles
