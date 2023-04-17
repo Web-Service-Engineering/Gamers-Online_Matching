@@ -44,6 +44,7 @@ class ProfileDto:
         'explorer_pct': fields.String(required=False, description='explorer_pct'),
         'killer_pct': fields.String(required=False, description='killer_pct'),
         'socializer_pct': fields.String(required=False, description='socializer_pct'),
+        'player_type': fields.String(required=False, description='player type'),
         'id': fields.String(description='profile Identifier')
     })
 

@@ -144,34 +144,43 @@ def find_link_minded_players(data):
   my_profile = get_profile_by_id(data)
   player_type = get_player_type(my_profile)
   profiles = []
-
+  results = []
   try:
     if player_type is None:
         raise Exception('This user has not take the bartle test')
       
-    key = player_type.get("key")
-    value = player_type.get("value")
-
-    if key == 'A':
-        profiles =  db.session.query.fliter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.achiever_pct >= value).all()
+    key = player_type["playertype"]
+    score = player_type["score"]
+    fromval = score-.10
+    toval = score+.10
+    if key == 'A':  
+        profiles =  db.session.query(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.achiever_pct.between(fromval, toval)).all()
     if key == 'E':
-        profiles =  db.session.query.filter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.explorer_pct >= value).all()
+        profiles =  db.session.query(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.explorer_pct.between(fromval, toval)).all()
     if key == 'K':
-        profiles =  db.session.query.filter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.killer_pct >= value).all()
+        profiles =  db.session.query(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.killer_pct.between(fromval, toval)).all()
     if key == 'S':
-        profiles =  db.session.query.filter_by(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.socializer_pct >= value).all()
+        profiles =  db.session.query(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.socializer_pct.between(fromval, toval)).all()
     
-    my_friends = get_my_friends(data)
-    if my_friends is not None:
-        profile_results = []
-        for p in profiles:
-            temp = my_friends.query.filter_by(id == p.id).first()
-            if temp is None:
-                profile_results.append(temp)
-    else:
-        return profiles
+    if profiles is not  None:
+        for p, b in profiles:
+            p.achiever_pct = b.achiever_pct
+            p.explorer_pct = b.explorer_pct
+            p.killer_pct = b.killer_pct
+            p.socializer_pct = b.socializer_pct
+            p.player_type = key
+            results.append(p)
 
-    return profiles
+    friends = get_my_friends(data)
+   
+    if len(friends) != 0:
+        for r in results:
+            f = friends.query.filter_by(id == r.id).first()
+            if f is not None:
+                 results.remove(r)
+
+    return results
+  
   except Exception as e:
         response_object = {
         'status': 'fail',
@@ -187,23 +196,27 @@ def get_player_type(profile):
        'K' : profile.killer_pct,
        'S' : profile.socializer_pct
     }
+
+   test = max(df, key = df.get)
+
+   thisdict = {
+    "playertype": test[0],
+    "score": max(df.values())
+    }
    
-   key = max(df)
-   value = max(df.values())
-   result =  {key: value}
-   return result
+   return thisdict
  
 def get_my_friends(accountid):
     # creating list
 
-    profiles = []
+    friends = []
     profilefriendships = Profile.query.filter_by(account_id=accountid).join(ProfileFriendship, Profile.id == ProfileFriendship.profile_id).all()
     for profilefriendship in profilefriendships:
         for friend in profilefriendship.friends:
            profile = Profile.query.filter_by(id = friend.friends_profile_id).first()     
-           profiles.append(profile)
+           friends.append(profile)
 
-    return profiles
+    return friends
 
 def send_invitation(data):
     myprofile = Profile.query.filter_by(account_id=data['current_account_id']).first()
@@ -380,7 +393,7 @@ def get_group_members(accountid):
         for profilegroup in profilegroups.groups:
            profile = Profile.query.filter_by(id = profilegroup.profile_id).first()     
            profiles.append(profile)
-
+           
     return profiles
 
 def save_changes(data):
