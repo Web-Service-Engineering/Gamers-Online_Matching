@@ -161,7 +161,7 @@ def find_link_minded_players(data):
         profiles =  db.session.query(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.killer_pct.between(fromval, toval)).all()
     if key == 'S':
         profiles =  db.session.query(Profile, BartleQuotient).join(Profile, BartleQuotient.profile_id == Profile.id, isouter=True).filter(BartleQuotient.socializer_pct.between(fromval, toval)).all()
-    
+
     if profiles is not  None:
         for p, b in profiles:
             p.achiever_pct = b.achiever_pct
@@ -172,12 +172,16 @@ def find_link_minded_players(data):
             results.append(p)
 
     friends = get_my_friends(data)
-   
+
     if len(friends) != 0:
         for r in results:
-            f = friends.query.filter_by(id == r.id).first()
-            if f is not None:
-                 results.remove(r)
+            # f = Friends.query.filter_by(friends_profile_id == r.id).first()
+            #f = Friends.query.filter_by(friends_profile_id=r.id).first()
+            #for f in friends:
+                #if f.id == r.id:
+                # if f is not None:
+            if r in friends:
+                     results.remove(r)
 
     return results
   

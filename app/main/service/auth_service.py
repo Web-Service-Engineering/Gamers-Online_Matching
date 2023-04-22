@@ -64,7 +64,7 @@ def login_user(data):
             }
         return response_object, 401
 
-@staticmethod
+
 def logout_user(data):
         if data:
             auth_token = data.split(" ")[1]
