@@ -19,38 +19,41 @@
  
  [Project_User_Stories_and_Points - Team3_SWE6813.xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10994365/Project_User_Stories_and_Points.-.Team3_SWE6813.xlsx)
 
- ## Sprint 1
- ![Sprint 1 story points](https://user-images.githubusercontent.com/85327006/225479498-7096e4d2-6b69-425e-8f49-cdcdf6e8497e.PNG)
+ ## Sprint 3
+![image](https://user-images.githubusercontent.com/85327006/234594260-9a746fb1-bed5-4439-bfa2-ca7e3117b375.png)
  
- # STORY DECOMPOSITION SPRINT 1
+ # STORY DECOMPOSITION SPRINT 3
  
- ![story decomp](https://user-images.githubusercontent.com/85327006/225481310-077181a5-66cb-4e00-9526-08b7166b99de.PNG)
+ ![image](https://user-images.githubusercontent.com/85327006/234594449-6b9eb6bc-5fd9-437a-89c9-9c7378203c0e.png)
  
  # KANBAN BOARD 
- 
- ![Sprint 1 board](https://user-images.githubusercontent.com/85327006/225479964-da00a065-c168-4f74-bd69-d3d32660f725.PNG)
- ![Sprint 1 board 2](https://user-images.githubusercontent.com/85327006/225479957-79f2da7f-53ca-40f2-8e32-bbeaea4a2a0d.PNG)
- ![Sprint 1 board 3](https://user-images.githubusercontent.com/85327006/225479961-cf98970e-9e9e-4a06-b18f-c4400fd1be46.PNG)
+
+ ![image](https://user-images.githubusercontent.com/85327006/234598464-09b3f7f6-3cbb-4ef1-9f89-47dbe670685b.png)
+![image](https://user-images.githubusercontent.com/85327006/234598578-523019bc-b42d-42e0-9c82-ed9d62321aca.png)
  
  # DAILY SCRUM SHEET
- [Daily_Scrum_Tracker - Team3_SWE6813.xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/10994553/Daily_Scrum_Tracker.-.Team3_SWE6813.xlsx)
+[Daily_Scrum_Tracker (3).xlsx](https://github.com/Web-Service-Engineering/Gamers-Online_Matching/files/11333701/Daily_Scrum_Tracker.3.xlsx)
  
  # SPRINT BURNDOWN CHART
  
- ![Sprint burnout chart](https://user-images.githubusercontent.com/85327006/225482626-2aa6d8d8-600c-47e0-9398-6d6359112c9d.PNG)
- ![Sprint insights](https://user-images.githubusercontent.com/85327006/225482629-499d3fa6-e8fe-4ecd-8c75-e9213f30f308.PNG)
+![image](https://user-images.githubusercontent.com/85327006/234599801-007e3320-c3eb-4d9b-9ae7-b98fe3efafd1.png)
+![image](https://user-images.githubusercontent.com/85327006/234599926-cec919e1-0d40-4747-aa59-084724dc33b0.png)
  
  # PAIR PROGRAMMING
  
- ![Sprint 1 Pair program](https://user-images.githubusercontent.com/85327006/225482942-3c06328d-59c9-4bcf-b953-9b91635f209d.PNG)
+![IDE](https://user-images.githubusercontent.com/85327006/234599997-7648ddb0-1234-45c7-be7b-16f7303bbd3f.PNG)
  
  # TEST SUITE SCREENSHOT
 
- ![Sprint 1 Test Suite](https://user-images.githubusercontent.com/85327006/225457756-15cce1e2-31ba-480f-968a-9791453ab1aa.PNG)
+ ![image](https://user-images.githubusercontent.com/85327006/230260430-f3394fd5-0479-4cb7-a341-b71ef0178b6a.png)
  
  # SPRINT REVIEW
  
-  ![Sprint 1 Review](https://user-images.githubusercontent.com/85327006/225483154-05122ecc-0d63-4ffa-8c42-12b709e99241.PNG)
+  ![Mobbing](https://user-images.githubusercontent.com/85327006/234600621-764d5dad-e9f6-40b7-a5fe-cc6c35365827.PNG)
+  
+  # CI CD IMPLEMENTATION
+  ![image](https://user-images.githubusercontent.com/85327006/234600800-cddc7539-dee9-4772-b5c8-037e3a0a057f.png)
+![image](https://user-images.githubusercontent.com/85327006/234600969-17efe9f7-cd0a-41ad-bbaf-72222a746b88.png)
   
  # MISCELLANEOUS
  
@@ -62,10 +65,12 @@
 
  ## User Interface
  
- ![MicrosoftTeams-image](https://user-images.githubusercontent.com/85327006/225483947-ca53de82-3142-468c-acd4-52f8ee2ab852.png)
-![MicrosoftTeams-image (3)](https://user-images.githubusercontent.com/85327006/225483950-10da6e93-2971-47ce-8062-ed84e4b97273.png)
-![MicrosoftTeams-image (2)](https://user-images.githubusercontent.com/85327006/225483961-d93d2ad1-bd8e-452a-929b-ff60418eb980.png)
-![MicrosoftTeams-image (1)](https://user-images.githubusercontent.com/85327006/225483963-be067ffb-aa2b-46c3-aaa1-8a524d92b8ca.png)
+ ![image](https://user-images.githubusercontent.com/85327006/234601601-2d79132c-6ffb-4b47-b82c-da4356161ba9.png)
+![image](https://user-images.githubusercontent.com/85327006/234601801-f29c18d8-794f-473c-ad8f-bc4dd4498acc.png)
+![image](https://user-images.githubusercontent.com/85327006/234601869-201d34b4-0051-4d8e-af65-771672dd19d9.png)
+![image](https://user-images.githubusercontent.com/85327006/234601952-94fe94f3-64c0-4bf4-9a47-d8748870f665.png)
+![image](https://user-images.githubusercontent.com/85327006/234602027-414318d5-cdce-4f46-8c53-1335c4fe5f80.png)
+![image](https://user-images.githubusercontent.com/85327006/234602121-1a741fb1-37af-4b77-a1f0-01bcd16b7bf1.png)
 
 ## Bartle Test
 http://matthewbarr.co.uk/bartle/
