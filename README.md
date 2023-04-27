@@ -13,6 +13,10 @@
 
  Paste this URL in the browser to test the application:  http://127.0.0.1:5000
  
+ # DESIGN DECISION
+ 
+ We decided to use a fronted build on React and switch from Angular to allow smooth integration of all our features.
+ 
  # STORY POINT FORECAST
  
  ## Whole Project
